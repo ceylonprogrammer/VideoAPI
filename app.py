@@ -46,34 +46,46 @@ reg_time = datetime.now()
 CORS(app)
 
 
-@app.route('/videoapi/register')
+@app.route('/videoapi/register', methods=['GET', 'POST'])
 def user_register():
-    output = {"success": True, 'date': str(datetime.now())}
-    # get URL parameter and then convert it to json object
+    # check if it is a GET method
+    if request.method == 'GET':
+        request_data = request.args
+    elif request.method == 'POST':
+        request_data = request.form
+    else:
+        print("Unknown Request Method,Request should be GET or POST method")
+    try:
+        output = {"success": True, 'date': str(datetime.now())}
+        # get URL parameter and then convert it to json object
 
-    # single line initialization
-    # json_obj = json.loads(request.args.get('json', ''))
+        # single line initialization
+        # json_obj = json.loads(request.args.get('json', ''))
 
-    # Get url argument GET method.Later discuss how to add GET and POST methods
-    request_data = request.args
+        # Get url argument GET method.Later discuss how to add GET and POST methods
+        # request_data = request.args
+        # Newly added GET and POST method so this line is commented
 
-    # Get jason type from request.args
-    json_obj = request_data.get('json')
+        # Get jason type from request.args
+        json_obj = request_data.get('json')
 
-    # cast in to json key value pairs
-    url_args = json.loads(json_obj)
+        # cast in to json key value pairs
+        url_args = json.loads(json_obj)
 
-    # create Empty Dictionary to hold url arguments
-    user_details = {}
-    user_details['First_Name'] = url_args['fname']
-    user_details['Last_Name'] = url_args['lname']
-    user_details['Email'] = url_args['email']
-    user_details['Password'] = url_args['password']
-    user_details['User_id'] = user_verification_id
-    user_details['Verified'] = False
-    user_details['Register_time'] = str(reg_time)
-    
-    print(user_details)
+        # create Empty Dictionary to hold url arguments
+        user_details = {}
+        user_details['First_Name'] = url_args['fname']
+        user_details['Last_Name'] = url_args['lname']
+        user_details['Email'] = url_args['email']
+        user_details['Password'] = url_args['password']
+        user_details['User_id'] = user_verification_id
+        user_details['Verified'] = False
+        user_details['Register_time'] = str(reg_time)
+
+        print(user_details)
+    except Exception as ex:
+        output['success'] = False
+        output['Error'] = str(ex.message)
 
     return 'Hello World!'
 
