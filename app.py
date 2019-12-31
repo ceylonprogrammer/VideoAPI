@@ -82,18 +82,20 @@ def user_register():
         user_details = {}
         user_details['First_Name'] = url_args['fname']
         user_details['Last_Name'] = url_args['lname']
-        user_details['Email'] = url_args['email']
+        user_details['email'] = url_args['email']
         user_details['Password'] = url_args['password']
         user_details['User_id'] = user_verification_id
         user_details['Verified'] = False
         user_details['Register_time'] = str(reg_time)
 
-        print(user_details)
         # Check Existing Email Address
-        if user_info.count({"email": user_details['Email']}) == 1:
+
+        if user_info.count({"email": user_details['email']}) == 1:
             output['success'] = False
             output['Error'] = "Email Address already Exists,Please use different email address"
+
         else:
+
             add_email = user_info.insert(user_details)
 
     except Exception as ex:
