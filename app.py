@@ -26,8 +26,13 @@ print(socket.gethostbyaddr(socket.gethostname()))
 db_client = MongoClient('localhost', 27017)
 # print(db_client.server_info()) get connection Details
 print("Mongodb Connection Successful")
+db = db_client['videoAPI']
+userdetails = db['userdata']
+user_login_info = db['login_info']
+video_data = db['video_db']
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def hello_world():
