@@ -1,3 +1,9 @@
+'''
+GET Request for Advanced REST Client
+http://127.0.0.1:5000/videoapi/register?json={"fname":"sam","lname":"Dissa","email":"sameerad177@gmail.com","password":"abc123"}
+POST Request for Advanced REST Client
+application/x-www-form-urlencoded RAW input payload json={"fname":"sam","lname":"Dissa","email":"sameerad177@gmail.com","password":"abc123"}
+'''
 from flask import Flask
 from flask import render_template, stream_with_context
 from flask_cors import CORS, cross_origin
@@ -83,11 +89,18 @@ def user_register():
         user_details['Register_time'] = str(reg_time)
 
         print(user_details)
+        # Check Existing Email Address
+        if user_info.count({"email": user_details['Email']}) == 1:
+            output['success'] = False
+            output['Error'] = "Email Address already Exists,Please use different email address"
+        else:
+            add_email = user_info.insert(user_details)
+
     except Exception as ex:
         output['success'] = False
         output['Error'] = str(ex.message)
 
-    return 'Hello World!'
+    return json.dumps(output)
 
 
 if __name__ == '__main__':
